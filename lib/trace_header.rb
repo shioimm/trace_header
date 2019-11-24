@@ -1,7 +1,7 @@
-require 'trace_header/version'
 require 'active_support/core_ext'
 require_relative 'trace_header/description'
 require_relative 'trace_header/result'
+require 'trace_header/version'
 
 class TraceHeader
   include Description
