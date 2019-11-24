@@ -25,7 +25,7 @@ class TraceHeader
 
       def detailed_description(headers)
         if headers.empty?
-          "  - Nothing added. -\n"
+          "  - Nothing changed. -\n"
         else
           <<~"TEXT"
             #{lined_description(headers).join("\n")}
