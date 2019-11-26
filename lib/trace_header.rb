@@ -4,17 +4,17 @@ require_relative 'trace_header/result'
 require_relative 'trace_header/version'
 
 class TraceHeader
-  include Description
+  include Describable
 
   def initialize(app)
     @app       = app
-    @outputs   = []
+    @datas     = []
     @fixed_app = nil
   end
 
   def call(env)
     tracer.enable { @app.call(env) }
-    display(result)
+    output(result)
     @fixed_app
   end
 
@@ -31,10 +31,10 @@ class TraceHeader
       TracePoint.new(:call, :return) do |tp|
         if tp.called_rack_middleware?
           if tp.event.eql?(:call) \
-            && !@outputs.find { |input| input[:middleware].eql? tp.defined_class }
-            @outputs << { middleware: tp.defined_class,
-                          app: tp.self.deep_dup,
-                          env: tp.binding.local_variable_get(:env).deep_dup }
+            && !@datas.find { |input| input[:middleware].eql? tp.defined_class }
+            @datas << { middleware: tp.defined_class,
+                        app: tp.self.deep_dup,
+                        env: tp.binding.local_variable_get(:env).deep_dup }
           end
 
           if tp.event.eql?(:return)
@@ -45,6 +45,6 @@ class TraceHeader
     end
 
     def result
-      TraceHeader::Result.new(@app, @outputs)
+      TraceHeader::Result.new(@app, @datas)
     end
 end

@@ -1,8 +1,8 @@
 class TraceHeader
-  module Description
+  module Describable
     MAXIMUM_LENGTH = 50
 
-    def display(result)
+    def output(result)
       puts description(result)
     end
 
@@ -35,11 +35,11 @@ class TraceHeader
 
       def lined_description(headers)
         headers.flat_map do |header|
-          header.map { |field, value| "  - #{field}:  #{form(value)}" }
+          header.map { |name, value| "  - #{name}:  #{trim(value)}" }
         end
       end
 
-      def form(text)
+      def trim(text)
         text.split(';').map do |str|
           str.size > MAXIMUM_LENGTH ? str[0..MAXIMUM_LENGTH] + '...' : str
         end.join(';')

@@ -2,10 +2,10 @@ class TraceHeader
   class Result
     attr_reader :target_app
 
-    def initialize(target_app, outputs)
+    def initialize(target_app, datas)
       @target_app  = target_app
-      @target_hash = outputs.find { |output| output[:middleware].eql?(target_app.class) }
-      @inner_hash  = outputs[outputs.index(@target_hash) + 1]
+      @target_hash = datas.find { |data| data[:middleware].eql?(target_app.class) }
+      @inner_hash  = datas[datas.index(@target_hash) + 1]
     end
 
     def new_headers
